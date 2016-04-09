@@ -23,6 +23,9 @@ func add(event string, task interface{}) error {
 
 
 func invoke(event string, params ...interface{}) ([]reflect.Value, error) {
+	if _, ok := functionMap[event]; !ok {
+		return []reflect.Value{}, nil
+	}
 	f := reflect.ValueOf(functionMap[event])
 	if len(params) != f.Type().NumIn() {
 		return nil, errors.New("Parameter Mismatched")
